@@ -1,7 +1,6 @@
 package com.java.brand.model;
 
 import jakarta.persistence.*;
-import org.springframework.data.annotation.Id;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -9,6 +8,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "price")
 public class Price {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column(name = "brand_id")
     private Long brandId;
     @Column(name = "start_date")
@@ -23,6 +25,7 @@ public class Price {
     private BigDecimal price;
     private String curr;
 
+    public Long getId() { return id; }
     public Long getBrandId() { return brandId; }
     public LocalDateTime getStartDate() { return startDate; }
     public LocalDateTime getEndDate() { return endDate; }
