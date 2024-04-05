@@ -2,16 +2,14 @@ package com.java.brand.controller;
 
 import com.java.brand.model.dto.PriceDTO;
 import com.java.brand.service.PriceService;
-import com.java.brand.service.PriceServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -22,7 +20,7 @@ import java.util.Optional;
 public class PriceController {
     private final PriceService priceService;
 
-    public PriceController(PriceServiceImpl priceServiceImpl, PriceService priceService) {
+    public PriceController(PriceService priceService) {
         this.priceService = priceService;
     }
 
@@ -42,7 +40,16 @@ public class PriceController {
             @Parameter(description = "Brand Id", required = true)
             @RequestParam Long brandId) {
 
-        Optional<PriceDTO> price = priceService.findActivePrice(date, productId, brandId);
-        return price.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        Optional<PriceDTO> actualPrice = priceService.findActivePrice(date, productId, brandId);
+        if (actualPrice.isPresent()) {
+            return ResponseEntity.ok(actualPrice.get());
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encontró ningún precio para la solicitud especificada");
+        }
+    }
+
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<String> handleResponseStatusException(ResponseStatusException ex) {
+        return ResponseEntity.status(ex.getStatusCode()).body(ex.getMessage());
     }
 }
