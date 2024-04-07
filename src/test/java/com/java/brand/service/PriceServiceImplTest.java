@@ -1,8 +1,5 @@
 package com.java.brand.service;
 
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
-
 import com.java.brand.model.Price;
 import com.java.brand.model.dto.PriceDTO;
 import com.java.brand.repository.PriceRepository;
@@ -10,11 +7,15 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import java.time.LocalDateTime;
+
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class PriceServiceImplTest {
@@ -49,17 +50,7 @@ class PriceServiceImplTest {
 
     @Test
     void whenNonExistingProduct_thenThrowNotFound() {
-        Price mockPrice = new Price.Builder()
-                .productId(1L)
-                .brandId(1L)
-                .priceList(1)
-                .startDate(LocalDateTime.now().minusDays(1))
-                .endDate(LocalDateTime.now().plusDays(1))
-                .priority(1)
-                .price(new BigDecimal("99.99"))
-                .build();
-
-        when(priceRepository.findByStartDateLessThanEqualAndEndDateGreaterThanAndProductIdAndBrandIdOrderByPriorityDesc(
+                when(priceRepository.findByStartDateLessThanEqualAndEndDateGreaterThanAndProductIdAndBrandIdOrderByPriorityDesc(
                 any(LocalDateTime.class), any(LocalDateTime.class), anyLong(), anyLong()))
                 .thenReturn(Collections.emptyList());
 
@@ -68,4 +59,3 @@ class PriceServiceImplTest {
         assertFalse(activePrice.isPresent());
     }
 }
-

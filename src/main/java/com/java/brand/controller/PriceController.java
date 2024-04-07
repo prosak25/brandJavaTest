@@ -33,8 +33,8 @@ public class PriceController {
                     @ApiResponse(responseCode = "404", description = "Price not found")
             })
     public ResponseEntity<PriceDTO> getPrice(
-            @Parameter(description = "Date [yyyy-MM-dd'T'HH:mm:ss.SSSXXX]", required = true)
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime date,
+            @Parameter(description = "Date [yyyy-MM-dd HH:mm:ss]", required = true)
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime date,
             @Parameter(description = "Product Id", required = true)
             @RequestParam Long productId,
             @Parameter(description = "Brand Id", required = true)

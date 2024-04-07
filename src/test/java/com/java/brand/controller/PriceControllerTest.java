@@ -1,4 +1,4 @@
-package com.java.brand;
+package com.java.brand.controller;
 
 import com.java.brand.controller.PriceController;
 import com.java.brand.model.dto.PriceDTO;
@@ -42,8 +42,8 @@ class PriceControllerTest {
         given(priceService.findActivePrice(any(LocalDateTime.class), anyLong(), anyLong()))
                 .willReturn(Optional.of(mockPriceDTO));
 
-        mockMvc.perform(get("/api/price")
-                        .param("date", "2024-04-04T10:00:00")
+        mockMvc.perform(get("/testProject/v1/api/price")
+                        .param("date", "2024-04-04 10:00:00")
                         .param("productId", "1")
                         .param("brandId", "1")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -57,7 +57,7 @@ class PriceControllerTest {
                 .willReturn(Optional.empty());
 
 
-        mockMvc.perform(get("/api/price")
+        mockMvc.perform(get("/testProject/v1/api/price")
                         .param("date", "2024-04-04T10:00:00")
                         .param("productId", "1")
                         .param("brandId", "1")
