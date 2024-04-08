@@ -1,6 +1,5 @@
 package com.java.brand.controller;
 
-import com.java.brand.controller.PriceController;
 import com.java.brand.model.dto.PriceDTO;
 import com.java.brand.service.PriceService;
 import org.junit.jupiter.api.Test;
